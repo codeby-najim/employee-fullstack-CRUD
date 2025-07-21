@@ -16,10 +16,10 @@ A full-stack CRUD web application to manage employee records, built using the ME
 
 ## 🛠️ Tech Stack
 
-- **Frontend**: React, JavaScript, Axios, HTML/CSS
+- **Frontend**: React, JavaScript, Bootstrap
 - **Backend**: Node.js, Express.js
-- **Database**: MongoDB (MongoDB Atlas)
-- **Deployment**: Vercel (frontend), Render (backend)
+- **Database**: MongoDB 
+- **Deployment**: Vercel (frontend)
 
 ## 📦 Installation
 
@@ -29,8 +29,12 @@ cd frontend
 npm install
 npm start
 
-Backend
+## Backend
 
 cd backend
 npm install
 node index.js
+
+# Data base
+
+install mongoDB on local system
