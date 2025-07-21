@@ -20,36 +20,68 @@ export default function EmployeeCRUDApp() {
   }, []);
 
   const fetchEmployees = async () => {
-    const res = await fetch(API_URL);
-    const data = await res.json();
-    setEmployees(data);
+    try {
+      const res = await fetch(API_URL);
+      const data = await res.json();
+      setEmployees(data);
+    } catch (error) {
+      console.error('Error fetching employees:', error);
+    }
   };
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
+  const validateForm = () => {
+    const { name, email, designation, department, salary, doj } = form;
+
+    if (!name.trim() || !email.trim() || !designation.trim() || !department.trim() || !salary || !doj) {
+      alert('Please fill all required fields.');
+      return false;
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      alert('Invalid email format.');
+      return false;
+    }
+
+    if (isNaN(salary) || Number(salary) <= 0) {
+      alert('Salary must be a positive number.');
+      return false;
+    }
+
+    return true;
+  };
+
   const handleSubmit = async () => {
+    if (!validateForm()) return;
+
     const method = editingId ? 'PUT' : 'POST';
     const url = editingId ? `${API_URL}/${editingId}` : API_URL;
 
-    await fetch(url, {
-      method,
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(form),
-    });
+    try {
+      await fetch(url, {
+        method,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(form),
+      });
 
-    setForm({
-      name: '',
-      email: '',
-      designation: '',
-      department: '',
-      salary: '',
-      doj: '',
-      lastDay: '',
-    });
-    setEditingId(null);
-    fetchEmployees();
+      setForm({
+        name: '',
+        email: '',
+        designation: '',
+        department: '',
+        salary: '',
+        doj: '',
+        lastDay: '',
+      });
+      setEditingId(null);
+      fetchEmployees();
+    } catch (error) {
+      console.error('Error submitting form:', error);
+    }
   };
 
   const handleEdit = (emp) => {
@@ -58,8 +90,12 @@ export default function EmployeeCRUDApp() {
   };
 
   const handleDelete = async (id) => {
-    await fetch(`${API_URL}/${id}`, { method: 'DELETE' });
-    fetchEmployees();
+    try {
+      await fetch(`${API_URL}/${id}`, { method: 'DELETE' });
+      fetchEmployees();
+    } catch (error) {
+      console.error('Error deleting employee:', error);
+    }
   };
 
   return (
@@ -71,20 +107,50 @@ export default function EmployeeCRUDApp() {
           <div className="row g-3">
             {['name', 'email', 'designation', 'department', 'salary', 'doj', 'lastDay'].map((field) => (
               <div className="col-md-6" key={field}>
-                <label className="form-label text-capitalize">{field}</label>
+                <label className="form-label text-capitalize">
+                  {field} {['name', 'email', 'designation', 'department', 'salary', 'doj'].includes(field) && '*'}
+                </label>
                 <input
-                  type={field === 'salary' ? 'number' : 'text'}
+                  type={
+                    field === 'salary'
+                      ? 'number'
+                      : field === 'email'
+                      ? 'email'
+                      : field === 'doj' || field === 'lastDay'
+                      ? 'date'
+                      : 'text'
+                  }
                   name={field}
                   className="form-control"
                   value={form[field]}
                   onChange={handleChange}
+                  required={['name', 'email', 'designation', 'department', 'salary', 'doj'].includes(field)}
                 />
               </div>
             ))}
-            <div className="col-12">
-              <button className="btn btn-primary w-100" onClick={handleSubmit}>
+            <div className="col-12 d-grid gap-2">
+              <button className="btn btn-primary" onClick={handleSubmit}>
                 {editingId ? 'Update Employee' : 'Add Employee'}
               </button>
+              {editingId && (
+                <button
+                  className="btn btn-secondary"
+                  onClick={() => {
+                    setForm({
+                      name: '',
+                      email: '',
+                      designation: '',
+                      department: '',
+                      salary: '',
+                      doj: '',
+                      lastDay: '',
+                    });
+                    setEditingId(null);
+                  }}
+                >
+                  Cancel Edit
+                </button>
+              )}
             </div>
           </div>
         </div>
