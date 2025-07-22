@@ -1,3 +1,5 @@
 node_modules/
 employee-crud-backend\node_modules/
 employee-crud-frontend\node_modules/
+employee-crud-backend\.env/
+.env
