@@ -182,8 +182,8 @@ export default function EmployeeCRUDApp() {
                 <p className="mb-1"><strong>Designation:</strong> {emp.designation}</p>
                 <p className="mb-1"><strong>Department:</strong> {emp.department}</p>
                 <p className="mb-1"><strong>Salary:</strong> ₹{emp.salary}</p>
-                <p className="mb-1"><strong>Date of Joining:</strong> {emp.doj}</p>
-                <p className="mb-1"><strong>Last Working Day:</strong> {emp.lastDay}</p>
+               <p className="mb-1"><strong>Date of Joining:</strong> {emp.doj ? new Date(emp.doj).toLocaleDateString('en-IN') : ''}</p>
+                <p className="mb-1"><strong>Last Working Day:</strong> {emp.lastDay ? new Date(emp.lastDay).toLocaleDateString('en-IN') : ''}</p>
               </div>
               <div className="d-flex flex-column gap-2">
                 <button className="btn btn-warning" onClick={() => handleEdit(emp)}>Edit</button>
