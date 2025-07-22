@@ -25,9 +25,17 @@ export default function EmployeeCRUDApp() {
     try {
       const res = await fetch(`${API_URL}/employees`);
       const data = await res.json();
+
+      if (!Array.isArray(data)) {
+        console.error('Expected array, but got:', data);
+        setEmployees([]);
+        return;
+      }
+
       setEmployees(data);
     } catch (error) {
       console.error('Error fetching employees:', error);
+      setEmployees([]);
     }
   };
 
@@ -158,25 +166,29 @@ export default function EmployeeCRUDApp() {
         </div>
       </div>
 
-      {employees.map((emp) => (
-        <div className="card mb-3" key={emp._id}>
-          <div className="card-body d-flex justify-content-between align-items-start">
-            <div>
-              <h5 className="card-title mb-1">{emp.name}</h5>
-              <p className="mb-1"><strong>Email:</strong> {emp.email}</p>
-              <p className="mb-1"><strong>Designation:</strong> {emp.designation}</p>
-              <p className="mb-1"><strong>Department:</strong> {emp.department}</p>
-              <p className="mb-1"><strong>Salary:</strong> ₹{emp.salary}</p>
-              <p className="mb-1"><strong>Date of Joining:</strong> {emp.doj}</p>
-              <p className="mb-1"><strong>Last Working Day:</strong> {emp.lastDay}</p>
-            </div>
-            <div className="d-flex flex-column gap-2">
-              <button className="btn btn-warning" onClick={() => handleEdit(emp)}>Edit</button>
-              <button className="btn btn-danger" onClick={() => handleDelete(emp._id)}>Delete</button>
+      {Array.isArray(employees) && employees.length > 0 ? (
+        employees.map((emp) => (
+          <div className="card mb-3" key={emp._id}>
+            <div className="card-body d-flex justify-content-between align-items-start">
+              <div>
+                <h5 className="card-title mb-1">{emp.name}</h5>
+                <p className="mb-1"><strong>Email:</strong> {emp.email}</p>
+                <p className="mb-1"><strong>Designation:</strong> {emp.designation}</p>
+                <p className="mb-1"><strong>Department:</strong> {emp.department}</p>
+                <p className="mb-1"><strong>Salary:</strong> ₹{emp.salary}</p>
+                <p className="mb-1"><strong>Date of Joining:</strong> {emp.doj}</p>
+                <p className="mb-1"><strong>Last Working Day:</strong> {emp.lastDay}</p>
+              </div>
+              <div className="d-flex flex-column gap-2">
+                <button className="btn btn-warning" onClick={() => handleEdit(emp)}>Edit</button>
+                <button className="btn btn-danger" onClick={() => handleDelete(emp._id)}>Delete</button>
+              </div>
             </div>
           </div>
-        </div>
-      ))}
+        ))
+      ) : (
+        <p>No employees to display.</p>
+      )}
     </div>
   );
 }
