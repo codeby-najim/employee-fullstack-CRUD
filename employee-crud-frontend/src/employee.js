@@ -66,33 +66,39 @@ export default function EmployeeCRUDApp() {
   };
 
   const handleSubmit = async () => {
-    if (!validateForm()) return;
+  if (!validateForm()) return;
 
-    const method = editingId ? 'PUT' : 'POST';
-    const url = editingId ? `${API_URL}/employees/${editingId}` : `${API_URL}/employees`;
-
-    try {
-      await fetch(url, {
-        method,
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form),
-      });
-
-      setForm({
-        name: '',
-        email: '',
-        designation: '',
-        department: '',
-        salary: '',
-        doj: '',
-        lastDay: '',
-      });
-      setEditingId(null);
-      fetchEmployees();
-    } catch (error) {
-      console.error('Error submitting form:', error);
-    }
+  const payload = {
+    ...form,
+    salary: Number(form.salary), // Ensure salary is a number
   };
+
+  const method = editingId ? 'PUT' : 'POST';
+  const url = editingId ? `${API_URL}/employees/${editingId}` : `${API_URL}/employees`;
+
+  try {
+    await fetch(url, {
+      method,
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+
+    setForm({
+      name: '',
+      email: '',
+      designation: '',
+      department: '',
+      salary: '',
+      doj: '',
+      lastDay: '',
+    });
+    setEditingId(null);
+    fetchEmployees();
+  } catch (error) {
+    console.error('Error submitting form:', error);
+  }
+};
+
 
   const handleEdit = (emp) => {
     setForm(emp);
