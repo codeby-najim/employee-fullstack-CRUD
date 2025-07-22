@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 //const API_URL = 'http://localhost:5000'; // for local run without .env
 //const API_URL =  import.meta.env.VITE_API_URL;
-const API_URL = "https://employee-fullstack-crud.onrender.com/";
+const API_URL = "https://employee-fullstack-crud.onrender.com";
 
 export default function EmployeeCRUDApp() {
   const [employees, setEmployees] = useState([]);
