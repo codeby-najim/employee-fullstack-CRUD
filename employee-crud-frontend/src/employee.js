@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 
-const API_URL = 'http://localhost:5000/employees';
+//const API_URL = 'http://localhost:5000'; // for local run without .env
+const API_URL =  import.meta.env.VITE_API_URL;
+//const API_URL = "https://employee-crud-api.onrender.com";
 
 export default function EmployeeCRUDApp() {
   const [employees, setEmployees] = useState([]);
@@ -21,7 +23,7 @@ export default function EmployeeCRUDApp() {
 
   const fetchEmployees = async () => {
     try {
-      const res = await fetch(API_URL);
+      const res = await fetch(`${API_URL}/employees`);
       const data = await res.json();
       setEmployees(data);
     } catch (error) {
@@ -59,7 +61,7 @@ export default function EmployeeCRUDApp() {
     if (!validateForm()) return;
 
     const method = editingId ? 'PUT' : 'POST';
-    const url = editingId ? `${API_URL}/${editingId}` : API_URL;
+    const url = editingId ? `${API_URL}/employees/${editingId}` : `${API_URL}/employees`;
 
     try {
       await fetch(url, {
@@ -91,7 +93,7 @@ export default function EmployeeCRUDApp() {
 
   const handleDelete = async (id) => {
     try {
-      await fetch(`${API_URL}/${id}`, { method: 'DELETE' });
+      await fetch(`${API_URL}/employees/${id}`, { method: 'DELETE' });
       fetchEmployees();
     } catch (error) {
       console.error('Error deleting employee:', error);
