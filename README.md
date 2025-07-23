@@ -2,9 +2,9 @@
 
 A full-stack CRUD web application to manage employee records, built using the MERN stack (MongoDB, Express, React, Node.js).
 
-## 🌐 Live Demo/ (coming soon)
+## 🌐 Live Demo
 
-> Vercel link : , + Render link: 
+> Vercel link : https://employee-fullstack-curd.vercel.app/
 
 ## 🔧 Features
 
@@ -18,8 +18,8 @@ A full-stack CRUD web application to manage employee records, built using the ME
 
 - **Frontend**: React, JavaScript, Bootstrap
 - **Backend**: Node.js, Express.js
-- **Database**: MongoDB 
-- **Deployment**: Vercel (frontend)
+- **Database**: MongoDB Atlas
+- **Deployment**: Vercel (frontend), Render (backend)
 
 ## 📦 Installation
 
